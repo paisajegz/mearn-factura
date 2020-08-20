@@ -13,6 +13,11 @@ const autorizacion = (req,res,next)=>{
                 next()
             }
         })
+    }else{
+        res.send({
+            title:"error",
+            message:"el token no existe"
+        })
     }
 
 }  
