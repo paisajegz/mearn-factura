@@ -8,9 +8,18 @@ export default class CrearFactura extends React.Component{
         datosCliente:{},
         datosProductos:{},
         disableCar:true,
-        listaProductos:[]
+        listaProductos:[],
+        totalFactura:0
     }
 
+    calcularPrecio(){
+        console.log("paso haca")
+        let total=0
+        this.state.listaProductos.forEach(product => {
+            total+=parseInt(product.total)
+        });
+        this.setState({totalFactura:total})
+    }
 
     buscarCliente(e){
         if(e.keyCode==13){
@@ -56,6 +65,7 @@ export default class CrearFactura extends React.Component{
         listaProductos.push(itemProduct)
         this.setState({listaProductos})
         this.setState({disableCar:true})
+        this.calcularPrecio()
     }
 
     render(){
@@ -157,7 +167,7 @@ export default class CrearFactura extends React.Component{
                         </table>
                         </div>
                         <div class="card-footer">
-                            total: <span id="total-factura"></span>
+                            total: <span id="total-factura">{this.state.totalFactura}</span>
                             <button class="btn btn-danger" id="btn-limpiar-factura">limpiar todo</button><button class="btn btn-success" id="btn-enviar-factura" onclick="hacerpago()">Pagar</button>
                         </div>
                     </div>
