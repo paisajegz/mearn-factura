@@ -1,6 +1,7 @@
 import React from 'react';
 import ServiceCliente from "../../../services/clientes.service"
 import ServiceProducto from "../../../services/productos.service"
+import ServiceFactura from "../../../services/factura.service"
 
 export default class CrearFactura extends React.Component{
     state={
@@ -71,15 +72,14 @@ export default class CrearFactura extends React.Component{
         this.calcularPrecio()
     }
 
-    hacerPago(){
+    async hacerPago(){
         const factura={
             cliente:this.state.datosCliente._id,
-            vendedor:"",
+            vendedor:"5f3e79e6f163321e0092cc49",
             total:this.state.totalFactura.toString(),
             productos:[
             ]
         }    
-        
         this.state.listaProductos.forEach((product)=>{
             factura.productos.push({
                 idProducto:product._id,
@@ -88,6 +88,8 @@ export default class CrearFactura extends React.Component{
             })
         })
         console.log(factura)
+        const data= await ServiceFactura.crearFactura(factura)
+        console.log(data)
     }
 
     render(){

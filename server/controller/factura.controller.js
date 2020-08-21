@@ -1,3 +1,4 @@
+const mongoose = require("mongoose")
 const FacturasSchema = require("../schemas/facturas.schema")
 const controllerFactura ={}
 
@@ -8,6 +9,9 @@ controllerFactura.mostrarFactura=async function(req,res){
 
 
 controllerFactura.crearFactura=async function(req,res){
+    //req.body.vendedor=mongoose.Schema.Types.ObjectId(req.body.vendedor)
+    console.log(req.body.vendedor)
+    //res.send(req.body)
     const factura= new FacturasSchema(req.body)
     await factura.save()
     res.send({
