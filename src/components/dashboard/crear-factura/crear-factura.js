@@ -13,7 +13,7 @@ export default class CrearFactura extends React.Component{
     }
 
     calcularPrecio(){
-        console.log("paso haca")
+        
         let total=0
         this.state.listaProductos.forEach(product => {
             total+=parseInt(product.total)
@@ -34,6 +34,16 @@ export default class CrearFactura extends React.Component{
         }
     }
 
+    actualizarCantidad(e,index){
+        console.log("funciona")
+        const listaProductos=this.state.listaProductos
+        listaProductos[index].cantidad=e.target.value
+        listaProductos[index].total=listaProductos[index].precio*listaProductos[index].cantidad
+        this.setState({listaProductos})
+        console.log(listaProductos)
+        this.calcularPrecio()
+    }
+
 
     buscarProducto(e){
         if(e.keyCode==13){
@@ -48,7 +58,10 @@ export default class CrearFactura extends React.Component{
             })            
         }
     }
-
+    eliminarLista(){
+        this.setState({listaProductos:[]})
+        this.setState({totalFactura:0})
+    }
 
     agregarProductoFactura(){
         const index=this.state.listaProductos.length
@@ -66,6 +79,10 @@ export default class CrearFactura extends React.Component{
         this.setState({listaProductos})
         this.setState({disableCar:true})
         this.calcularPrecio()
+    }
+
+    hacerPago(){
+        
     }
 
     render(){
@@ -156,7 +173,7 @@ export default class CrearFactura extends React.Component{
                                         <tr>
                                             <th style={{width: '10%'}}>{product.id}</th>
                                     <th style={{width: '20%'}}>{product.nombre}</th>
-                                    <th style={{width: '10%'}}>{product.cantidad}</th>
+                                    <th style={{width: '10%'}}><input type="text" style={{width:"80%"}} value={product.cantidad} onChange={(e)=>this.actualizarCantidad(e,index)}/></th>
                                     <th style={{width: '30%'}}>{product.precio}</th>
                                     <th style={{width: '30%'}}>{product.total}</th>
                                         </tr>  
@@ -168,7 +185,7 @@ export default class CrearFactura extends React.Component{
                         </div>
                         <div class="card-footer">
                             total: <span id="total-factura">{this.state.totalFactura}</span>
-                            <button class="btn btn-danger" id="btn-limpiar-factura">limpiar todo</button><button class="btn btn-success" id="btn-enviar-factura" onclick="hacerpago()">Pagar</button>
+                            <button class="btn btn-danger" id="btn-limpiar-factura" onClick={this.eliminarLista.bind(this)}>limpiar todo</button><button class="btn btn-success" id="btn-enviar-factura" onClick={this.hacerPago.bind(this)}>Pagar</button>
                         </div>
                     </div>
                 </div>
