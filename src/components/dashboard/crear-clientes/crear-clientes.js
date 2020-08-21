@@ -1,5 +1,5 @@
 import React from 'react';
-
+import ServiceCliente from "../../../services/clientes.service"
 
 export default class CrearClientes extends React.Component
 {
@@ -24,19 +24,9 @@ export default class CrearClientes extends React.Component
             documento:""
     })
     }
-    guardarCliente(){
-        fetch("http://localhost:3003/clientes/add",{
-            headers: {
-            'Accept': 'application/json',
-            'Content-Type': 'application/json'
-            },
-            method: "POST",
-            body: JSON.stringify(this.state)
-        }).then((response)=>{
-            return response.json()
-        }).then((data)=>{
-            console.log(data)
-        })
+    async guardarCliente(){
+        const data = await ServiceCliente.crearCliente(this.state)
+        console.log(data)
     }
 
     render(){

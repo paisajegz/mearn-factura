@@ -1,4 +1,5 @@
 import React from 'react';
+import ServiceCliente from "../../../services/clientes.service"
 export default class Clientes extends React.Component{
     state={
         clientes:[],
@@ -21,15 +22,9 @@ export default class Clientes extends React.Component{
         this.setState({updateCliente:cliente})
     }
 
-    eliminarCliente(index){
-        fetch(`http://localhost:3003/clientes/${index}`,{
-            method:"DELETE"
-        })
-        .then((response)=>{
-            return response.json()
-        }).then((data)=>{
-            console.log(data)
-        })
+    async eliminarCliente(index){
+        const data=await ServiceCliente.eliminarCliente(index)
+        console.log(data)
     }
 
     actulizarCliente(index){
@@ -37,30 +32,16 @@ export default class Clientes extends React.Component{
         this.setState({actualizando:true})
 
     }
-    componentDidMount(){
-        fetch("http://localhost:3003/clientes")
-        .then((response)=>{
-            return response.json()
-        }).then((data)=>{
-            this.setState({clientes:data})
-        })
+    async componentDidMount(){
+        const data = await ServiceCliente.mostrarClientes()
+        this.setState({clientes:data})
     }
 
-    submitUpdateClient(){
+    async submitUpdateClient(){
         delete this.state.updateCliente._id
        console.log(`http://localhost:3003/clientes/${this.state.updateCliente.documento}`)
-        fetch(`http://localhost:3003/clientes/${this.state.updateCliente.documento}`,{
-            headers: {
-                'Accept': 'application/json',
-                'Content-Type': 'application/json'
-                },
-                method: "PUT",
-                body: JSON.stringify(this.state.updateCliente)
-        }).then((response)=>{
-            return response.json()
-        }).then((data)=>{
-            alert(data.title)
-        })
+       const data = await ServiceCliente.actualizarCliente(this.state.updateCliente.documento,this.state.updateCliente)
+       alert(data.title)
     }
 
     render(){

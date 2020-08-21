@@ -1,7 +1,7 @@
 import React from 'react';
 import { withRouter } from 'react-router-dom';
 import "./login.css"
-
+import ServiceVendedor from "../../services/vendedor.service"
 class Login extends React.Component{
   state={
       correo:"",
@@ -17,26 +17,18 @@ class Login extends React.Component{
   }
 
 
-  loguear(event){
+  async loguear(event){
     event.preventDefault();
     console.log({correo: this.state.correo, clave : this.state.clave})
-    fetch("http://localhost:3003/vendedor/login",{
-      headers: {
-        'Accept': 'application/json',
-        'Content-Type': 'application/json'
-      },
-      method: "POST",
-      body: JSON.stringify({correo: this.state.correo, clave : this.state.clave})
-    }).then((response)=>{
-      return response.json()
-    }).then((data)=>{
+      const data=await ServiceVendedor.login({correo: this.state.correo, clave : this.state.clave})
+      console.log(data)
       if(data.title=="ok"){
         sessionStorage.setItem("auth",data.message)
         this.props.cambiarLogin(true)
       }else{ 
         alert("permisos denegado")
-      }
-    })
+      }  
+    
     
   }
 

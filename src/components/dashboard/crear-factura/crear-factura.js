@@ -1,5 +1,6 @@
 import React from 'react';
-
+import ServiceCliente from "../../../services/clientes.service"
+import ServiceProducto from "../../../services/productos.service"
 
 export default class CrearFactura extends React.Component{
     state={
@@ -21,16 +22,10 @@ export default class CrearFactura extends React.Component{
         this.setState({totalFactura:total})
     }
 
-    buscarCliente(e){
+    async buscarCliente(e){
         if(e.keyCode==13){
-            
-            fetch(`http://localhost:3003/clientes/documento/${e.target.value}`)
-            .then((response)=>{
-                return response.json()
-            }).then((data)=>{
-                console.log(data)
-                this.setState({datosCliente: data})
-            })            
+            const data=await ServiceCliente.mostrarClientesById(e.target.value)  
+            this.setState({datosCliente: data})
         }
     }
 
@@ -45,17 +40,12 @@ export default class CrearFactura extends React.Component{
     }
 
 
-    buscarProducto(e){
+    async buscarProducto(e){
         if(e.keyCode==13){
-            
-            fetch(`http://localhost:3003/productos/${e.target.value}`)
-            .then((response)=>{
-                return response.json()
-            }).then((data)=>{
-                console.log(data)
-                this.setState({datosProductos: data})
-                this.setState({disableCar:false})
-            })            
+            const data =await ServiceProducto.mostrarProductosById(e.target.value)
+            console.log(data)
+            this.setState({datosProductos: data})
+            this.setState({disableCar:false})
         }
     }
     eliminarLista(){
@@ -82,7 +72,22 @@ export default class CrearFactura extends React.Component{
     }
 
     hacerPago(){
+        const factura={
+            cliente:this.state.datosCliente._id,
+            vendedor:"",
+            total:this.state.totalFactura.toString(),
+            productos:[
+            ]
+        }    
         
+        this.state.listaProductos.forEach((product)=>{
+            factura.productos.push({
+                idProducto:product._id,
+                cantidad:product.cantidad,
+                precio:product.precio
+            })
+        })
+        console.log(factura)
     }
 
     render(){
