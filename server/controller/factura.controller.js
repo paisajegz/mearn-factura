@@ -26,12 +26,17 @@ controllerFactura.mostrarFacturaById=async function(req,res){
 
 
 controllerFactura.eliminarFactura=function(req,res){
+    console.log("el id es" +req.params.id)
     FacturasSchema.deleteOne({_id:req.params.id},function(err){
-        if(err)res.send({title:"error",message:"factura no encontrada y no se ha podido eliminar"})
-        res.send({
-            title:"ok",
-            message:"se elimino sastifactoriamente la factura"
-        })
+        if(err){
+            console.log(err)
+            res.send({title:"error",message:"factura no encontrada y no se ha podido eliminar"})
+        }else {
+            res.send({
+                title:"ok",
+                message:"se elimino sastifactoriamente la factura"
+            })
+        }
     })
 }
 

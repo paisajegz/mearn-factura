@@ -1,9 +1,25 @@
 import React from 'react';
-
+import ServiceFactura from "../../../services/factura.service"
 
 export default class Factura extends React.Component
 {
-
+    state={
+        facturas:[]
+    }
+    async componentDidMount(){
+        this.mostrarFacturas()
+    }
+    async mostrarFacturas(){
+        const facturas=await ServiceFactura.mostrarFacturas()
+        console.log(facturas)
+        this.setState({facturas})
+    }
+    async eliminarFactura(id){
+        console.log(id)
+        const data = await ServiceFactura.eliminarFactura(id)
+        console.log(data)
+        this.mostrarFacturas()
+    }
     render(){
         return(
             <div>
@@ -79,7 +95,6 @@ export default class Factura extends React.Component
             <thead class="thead-dark">
               <tr>
                 <th scope="col">#</th>
-                <th scope="col">Descripcion</th>
                 <th scope="col">Fecha</th>
                 <th scope="col">Total</th>
                 <th scope="col">Eventos</th>
@@ -87,48 +102,14 @@ export default class Factura extends React.Component
       
             </thead>
             <tbody id="table-factura">
-                <tr>
-                    <td scope="row">1</td>
-                    <td>DASJDAKDJASDJ</td>
-                    <td>jasudauduas jasuduas jjuasaud uasd</td>
-                    <td>192292929</td>
-                    <td><button class="btn  btn-success"><i class="fa fa-plus"></i></button> <button class="btn  btn-danger"><i class="fa fa-trash"></i></button></td>
-                </tr>
-                <tr>
-                  <td scope="row">1</td>
-                  <td>DASJDAKDJASDJ</td>
-                  <td>jasudauduas jasuduas jjuasaud uasd</td>
-                  <td>192292929</td>
-                  <td><button class="btn  btn-success"><i class="fa fa-plus"></i></button> <button class="btn  btn-danger"><i class="fa fa-trash"></i></button></td>
-              </tr>
-              <tr>
-                  <td scope="row">1</td>
-                  <td>DASJDAKDJASDJ</td>
-                  <td>jasudauduas jasuduas jjuasaud uasd</td>
-                  <td>192292929</td>
-                  <td><button class="btn  btn-success"><i class="fa fa-plus"></i></button> <button class="btn  btn-danger"><i class="fa fa-trash"></i></button></td>
-              </tr>
-              <tr>
-                  <td scope="row">1</td>
-                  <td>DASJDAKDJASDJ</td>
-                  <td>jasudauduas jasuduas jjuasaud uasd</td>
-                  <td>192292929</td>
-                  <td><button class="btn  btn-success"><i class="fa fa-plus"></i></button> <button class="btn  btn-danger"><i class="fa fa-trash"></i></button></td>
-              </tr>
-              <tr>
-                  <td scope="row">1</td>
-                  <td>DASJDAKDJASDJ</td>
-                  <td>jasudauduas jasuduas jjuasaud uasd</td>
-                  <td>192292929</td>
-                  <td><button class="btn  btn-success"><i class="fa fa-plus"></i></button> <button class="btn  btn-danger"><i class="fa fa-trash"></i></button></td>
-              </tr>
-              <tr>
-                  <td scope="row">1</td>
-                  <td>DASJDAKDJASDJ</td>
-                  <td>jasudauduas jasuduas jjuasaud uasd</td>
-                  <td>192292929</td>
-                  <td><button class="btn  btn-success"><i class="fa fa-plus"></i></button> <button class="btn  btn-danger"><i class="fa fa-trash"></i></button></td>
-              </tr>
+                {this.state.facturas.map((factura)=>(
+                    <tr>
+                    <td scope="row">{factura._id}</td>
+                <td>{factura.fecha}</td>
+                <td>{factura.total}</td>
+                    <td><button class="btn  btn-success"><i class="fa fa-plus"></i></button> <button class="btn  btn-danger" onClick={this.eliminarFactura.bind(this,factura._id)}><i class="fa fa-trash"></i></button></td>
+                </tr>    
+                ))}
             </tbody>
           </table>
     </div>

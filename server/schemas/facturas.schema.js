@@ -14,6 +14,10 @@ const FacturasSchema = new mongoose.Schema({
         type:String,
         required:true
     },
+    fecha:{
+        type:Date,
+        default:Date.now
+    },
     productos:[
         {
             idProducto:{

@@ -13,6 +13,26 @@ class ServiceFactura{
             resolve(json)
         })
     }
+
+    mostrarFacturas(){
+        return new Promise(async (resolve)=>{
+            const response=await fetch("http://localhost:3003/factura")
+            const json = await response.json()
+            resolve(json)
+        })
+    }
+
+
+    eliminarFactura(index){
+        return new Promise(async (resolve)=>{
+            const response=await fetch(`http://localhost:3003/factura/${index}`,{
+                method:"DELETE"
+            })
+            const json = await response.json()
+            resolve(json)
+        })
+      
+    }
 }
 
 
