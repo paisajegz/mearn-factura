@@ -4,7 +4,8 @@ class ServiceVendedor{
             const response= await fetch("http://localhost:3003/vendedor/login",{
                 headers: {
                     'Accept': 'application/json',
-                    'Content-Type': 'application/json'
+                    'Content-Type': 'application/json',
+                    "Authorization":sessionStorage.getItem("auth")
                 },
                 method: "POST",
                 body: JSON.stringify(datos)

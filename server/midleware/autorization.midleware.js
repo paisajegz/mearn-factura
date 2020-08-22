@@ -1,7 +1,9 @@
 const jwt = require("jsonwebtoken")
 
 const autorizacion = (req,res,next)=>{
-    token=req.headers["Authorization"]
+    token=req.headers["authorization"]
+    
+    
     if(token){
         jwt.verify(token,"el software es bueno",(err,decode)=>{
             if(err){

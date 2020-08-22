@@ -4,7 +4,8 @@ class ServiceCLiente{
             const response=await fetch("http://localhost:3003/clientes/add",{
                 headers: {
                 'Accept': 'application/json',
-                'Content-Type': 'application/json'
+                'Content-Type': 'application/json',
+                "Authorization":sessionStorage.getItem("auth")
                 },
                 method: "POST",
                 body: JSON.stringify(data)
@@ -19,7 +20,8 @@ class ServiceCLiente{
             const response=await fetch(`http://localhost:3003/clientes/${documento}`,{
                 headers: {
                     'Accept': 'application/json',
-                    'Content-Type': 'application/json'
+                    'Content-Type': 'application/json',
+                    "Authorization":sessionStorage.getItem("auth")
                     },
                     method: "PUT",
                     body: JSON.stringify(data)
@@ -32,7 +34,10 @@ class ServiceCLiente{
     eliminarCliente(index){
         return new Promise(async (resolve)=>{
             const response=await fetch(`http://localhost:3003/clientes/${index}`,{
-                method:"DELETE"
+                method:"DELETE",
+                headers:{
+                    "Authorization":sessionStorage.getItem("auth")
+                }
             })
             const json = await response.json()
             resolve(json)
@@ -42,7 +47,11 @@ class ServiceCLiente{
 
      mostrarClientes(){
         return new Promise(async (resolve)=>{
-            const response=await fetch("http://localhost:3003/clientes")
+            const response=await fetch("http://localhost:3003/clientes",{
+                headers:{
+                   "Authorization":sessionStorage.getItem("auth") 
+                }
+            })
             const json = await response.json()
             resolve(json)
         })
@@ -51,7 +60,11 @@ class ServiceCLiente{
 
     mostrarClientesById(data){
         return new Promise(async (resolve)=>{
-            const response=await fetch(`http://localhost:3003/clientes/documento/${data}`)
+            const response=await fetch(`http://localhost:3003/clientes/documento/${data}`,{
+                headers:{
+                    "Authorization":sessionStorage.getItem("auth")
+                }
+            })
             const json=await response.json()
             resolve(json)
         })
@@ -59,7 +72,11 @@ class ServiceCLiente{
 
     mostrarClienteFactura(data){
         return new Promise(async (resolve)=>{
-            const response=await fetch(`http://localhost:3003/clientes/${data}`)
+            const response=await fetch(`http://localhost:3003/clientes/${data}`,{
+                headers:{
+                    "Authorization":sessionStorage.getItem("auth")
+                }
+            })
             const json=await response.json()
             resolve(json)
         })

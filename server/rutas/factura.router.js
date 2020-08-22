@@ -2,14 +2,14 @@ const express = require("express")
 const router = express.Router()
 const contrllerFacturas = require("../controller/factura.controller")
 const autorizacion = require("../midleware/autorization.midleware")
-router.get("/",contrllerFacturas.mostrarFactura)
+router.get("/",autorizacion,contrllerFacturas.mostrarFactura)
 
-router.get("/:id",contrllerFacturas.mostrarFacturaById)
+router.get("/:id",autorizacion,contrllerFacturas.mostrarFacturaById)
 
-router.post("/add",contrllerFacturas.crearFactura)
+router.post("/add",autorizacion,contrllerFacturas.crearFactura)
 
 
-router.delete("/:id",contrllerFacturas.eliminarFactura)
+router.delete("/:id",autorizacion,contrllerFacturas.eliminarFactura)
 
 
 module.exports=router

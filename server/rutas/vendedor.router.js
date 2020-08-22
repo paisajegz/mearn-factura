@@ -3,11 +3,11 @@ const router = express.Router()
 const controllerVendedor = require("../controller/vendedor.controller")
 const autorizacion = require("../midleware/autorization.midleware")
 
-router.get("/",controllerVendedor.mostrarVendedor)
+router.get("/",autorizacion,controllerVendedor.mostrarVendedor)
 
 router.post("/login",controllerVendedor.login)
 
-router.get("/:id",controllerVendedor.mostrarVendedorById)
+router.get("/:id",autorizacion,controllerVendedor.mostrarVendedorById)
 
 router.post("/add",autorizacion,controllerVendedor.crearVendedor)
 
