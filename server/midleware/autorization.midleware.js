@@ -11,7 +11,7 @@ const autorizacion = (req,res,next)=>{
                             message:"el usuario no ha sido autenticado"
                         })
             }else{
-                req.vendedor=decode
+                req.vendedor=decode.data
                 next()
             }
         })

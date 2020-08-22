@@ -23,9 +23,7 @@ router.post("/add",[ autorizacion, validate([
 router.delete("/:id", autorizacion,controllerClientes.eliminarCliente)
 
 
-router.get("/facturas/:id",autorizacion,function(req,res){
-
-})
+router.get("/facturas/:id",autorizacion,controllerCliente.monstrarFacturasByClientes)
 
 
 router.put("/:id", autorizacion,controllerCliente.actualizarCliente)

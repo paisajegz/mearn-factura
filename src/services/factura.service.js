@@ -41,6 +41,18 @@ class ServiceFactura{
         })
       
     }
+
+    mostrarFacturasByCliente(doc){
+        return new Promise(async (resolve)=>{
+            const response = await fetch(`http://localhost:3003/clientes/facturas/${doc}`,{
+                headers:{
+                    "Authorization":sessionStorage.getItem("auth")
+                }
+            })
+            const json = await response.json()
+            resolve(json)
+        })
+    }
 }
 
 

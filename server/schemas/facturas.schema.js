@@ -6,8 +6,9 @@ const FacturasSchema = new mongoose.Schema({
         required:true,
         ref:"Clientes"
     },
-    vendendor:{
+    vendedor:{
         type:mongoose.Schema.Types.ObjectId,
+        required:true,
         ref:"Vendedor"
     },
     total:{

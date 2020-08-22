@@ -15,6 +15,19 @@ class ServiceVendedor{
             resolve(json)
         })
     }
+
+
+    mostrarVendedorById(id){
+        return new Promise(async ( resolve)=>{
+            const response = await fetch(`http://localhost:3003/vendedor/${id}`,{
+                headers:{
+                    "Authorization":sessionStorage.getItem("auth")
+                }
+            })
+            const json = await response.json()
+            resolve(json)
+        })
+    }
 }
 
 

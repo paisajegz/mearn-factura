@@ -2,7 +2,7 @@ import React from 'react';
 import ServiceFactura from "../../../services/factura.service"
 import Modal from 'react-modal';
 import ServiceCliente from "../../../services/clientes.service"
-
+import ServiceVendedor from "../../../services/vendedor.service"
 
 export default class Factura extends React.Component
 {
@@ -23,9 +23,9 @@ export default class Factura extends React.Component
         facturaUnica:{
             productos:[]
         },
-        clienteFactura:{
-
-        }
+        clienteFactura:{},
+        vendedorFactura:{},
+        documentoCliente:""
     }
 
     closeModal(){
@@ -49,13 +49,24 @@ export default class Factura extends React.Component
         this.mostrarFacturas()
     }
 
+    async BuscarDocumento(e){
+        if(e.keyCode==13){
+            let facturas=[] 
+            facturas= await ServiceFactura.mostrarFacturasByCliente(this.state.documentoCliente)
+            console.log(facturas)
+            this.setState({facturas})
+        }        
+    }
+
     async mostrarCampos(id){
         this.setState({modal:true})
         const facturaUnica=this.state.facturas[id]
         const clienteFactura=await ServiceCliente.mostrarClienteFactura(facturaUnica.cliente)
+        const vendedorFactura = await ServiceVendedor.mostrarVendedorById(facturaUnica.vendedor)
         console.log(this.state.facturas[id].productos)
         this.setState({facturaUnica})
         this.setState({clienteFactura})
+        this.setState({vendedorFactura})
     }
     render(){
         return(
@@ -89,13 +100,13 @@ export default class Factura extends React.Component
         <h3>Vendedor</h3>
         <div class="row">
             <div class="col-md-6">
-                <p>Nombre: <span id="modal-vendedor-nombre"></span></p>
+            <p>Nombre: <span id="modal-vendedor-nombre">{this.state.vendedorFactura.primerNombre} {this.state.vendedorFactura.segundoNombre}</span></p>
             </div>
             <div class="col-md-6">
-                <p>Apellido: <span id="modal-vendedor-apellido"></span></p>
+                <p>Apellido: <span id="modal-vendedor-apellido">{this.state.vendedorFactura.primerApellido} {this.state.vendedorFactura.segundoApellido}</span></p>
             </div>
         </div>
-        <h3>Productos</h3>
+        <h3>Productos</h3> 
         <table class="table">
             <thead>
                 <tr>
@@ -130,6 +141,12 @@ export default class Factura extends React.Component
 <h2 class="mb-4">Facturas</h2>
 
 <div class="container-fluid my-5">
+    <div className="row my-3">
+        <div className="col-md-4">
+           <label for="input-cliente">Buscar por cliente</label>
+           <input type="text" id="input-cliente" value={this.state.documentoCliente} onChange={(e)=>{this.setState({documentoCliente:e.target.value})}} onKeyUp={this.BuscarDocumento.bind(this)}/>
+        </div>
+    </div>
     <div >
         <table class="table">
             <thead class="thead-dark">

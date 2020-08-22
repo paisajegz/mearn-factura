@@ -1,5 +1,7 @@
 const controllerCliente ={}
 const ClienteSchema = require("../schemas/cliente.schema")
+const FacturasSchema = require("../schemas/facturas.schema")
+const facturasSchema = require("../schemas/facturas.schema")
 
 controllerCliente.mostrarClientes=async function(req,res){
     res.send(await ClienteSchema.find().exec())
@@ -50,8 +52,18 @@ controllerCliente.actualizarCliente= async function(req,res){
                 message:"no se pudo actualizar el componente"
             }
         )
+    }    
+}
+
+
+controllerCliente.monstrarFacturasByClientes = async function(req,res){
+    const user=await ClienteSchema.findOne({documento:req.params.id}).exec();
+    if(user){
+        const facturas=await facturasSchema.find({ cliente: user._id})
+        res.send(facturas)
+    }else{
+        res.send([])
     }
-    
 }
 
 

@@ -10,13 +10,14 @@ controllerVendedor.mostrarVendedor=async function(req,res){
 
 
 controllerVendedor.crearVendedor=async function(req,res){
+
     vendedor = new VendedorSchema(req.body)
     await vendedor.save();
     res.send({title:"ok", message:"vendedor registrado"})
 }
 
 controllerVendedor.mostrarVendedorById=async function(req,res){
-    const vendedor={}
+    let vendedor={}
     try{
         vendedor=await VendedorSchema.findOne({_id:req.params.id}).exec()
     }catch(e){
