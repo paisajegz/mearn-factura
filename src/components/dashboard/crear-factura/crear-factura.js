@@ -82,6 +82,7 @@ export default class CrearFactura extends React.Component{
         }    
         this.state.listaProductos.forEach((product)=>{
             factura.productos.push({
+                nombre:product.nombre,
                 idProducto:product._id,
                 cantidad:product.cantidad,
                 precio:product.precio

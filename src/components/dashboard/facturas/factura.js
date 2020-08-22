@@ -1,17 +1,45 @@
 import React from 'react';
 import ServiceFactura from "../../../services/factura.service"
+import Modal from 'react-modal';
+import ServiceCliente from "../../../services/clientes.service"
+
 
 export default class Factura extends React.Component
 {
+    customStyles = {
+        content : {
+          top                   : '50%',
+          left                  : '50%',
+          right                 : 'auto',
+          bottom                : 'auto',
+          marginRight           : '-50%',
+          transform             : 'translate(-50%, -50%)'
+        }
+      };
+       
     state={
-        facturas:[]
+        facturas:[],
+        modal:false,
+        facturaUnica:{
+            productos:[]
+        },
+        clienteFactura:{
+
+        }
     }
+
+    closeModal(){
+        this.setState({modal:false})
+    }
+
     async componentDidMount(){
         this.mostrarFacturas()
+        
     }
     async mostrarFacturas(){
         const facturas=await ServiceFactura.mostrarFacturas()
         console.log(facturas)
+        
         this.setState({facturas})
     }
     async eliminarFactura(id){
@@ -20,38 +48,42 @@ export default class Factura extends React.Component
         console.log(data)
         this.mostrarFacturas()
     }
+
+    async mostrarCampos(id){
+        this.setState({modal:true})
+        const facturaUnica=this.state.facturas[id]
+        const clienteFactura=await ServiceCliente.mostrarClienteFactura(facturaUnica.cliente)
+        console.log(this.state.facturas[id].productos)
+        this.setState({facturaUnica})
+        this.setState({clienteFactura})
+    }
     render(){
         return(
             <div>
-                <div class="modal fade modal-factura" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+
+                <Modal style={this.customStyles} isOpen={this.state.modal} >
   <div class="modal-dialog modal-lg">
     <div class="modal-content">
         <div class="modal-header">
             <h5 class="modal-title">Factura</h5>
-            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-            <span aria-hidden="true">&times;</span>
-            </button>
         </div>
     <div class="modal-body">
         <h3>Cliente</h3>
         <div class="row">
             <div class="col-md-6">
-                <p>Nombre: <span id="modal-cliente-nombre"></span></p>
+                <p>Nombre: <span id="modal-cliente-nombre">{this.state.clienteFactura.primerNombre} {this.state.clienteFactura.segundoNombre}</span></p>
             </div>
             <div class="col-md-6">
-                <p>Apellido: <span id="modal-cliente-apellido"></span></p>
+                <p>Apellido: <span id="modal-cliente-apellido">{this.state.clienteFactura.primerApellido} {this.state.clienteFactura.segundoApellido}</span></p>
             </div>
             <div class="col-md-6">
-                <p>Correo: <span id="modal-cliente-correo"></span></p>
+                <p>Correo: <span id="modal-cliente-correo">{this.state.clienteFactura.correo}</span></p>
             </div>
             <div class="col-md-6">
-                <p>Telefono: <span id="modal-cliente-telefono"></span></p>
+                <p>Documento: <span id="modal-cliente-documento">{this.state.clienteFactura.documento}</span></p>
             </div>
             <div class="col-md-6">
-                <p>Documento: <span id="modal-cliente-documento"></span></p>
-            </div>
-            <div class="col-md-6">
-                <p>Tipo Documento: <span id="modal-cliente-tipodoc"></span></p>
+                <p>Tipo Documento: <span id="modal-cliente-tipodoc">{this.state.clienteFactura.tipoDocumento}</span></p>
             </div>
         </div>
         <h3>Vendedor</h3>
@@ -74,17 +106,25 @@ export default class Factura extends React.Component
                 </tr>
             </thead>
             <tbody id="modal-product">
+                {this.state.facturaUnica.productos.map((producto,index)=>(
+                    <tr>
+                        <td>{index+1}</td>
+                        <td>{producto.nombre}</td>
+                        <td>{producto.cantidad}</td>
+                        <td>{producto.precio}</td>
+                    </tr>
+                ))}
             </tbody>
         </table>
         <div>
         </div>
     </div>
     <div class="modal-footer">s
-        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-secondary" onClick={this.closeModal.bind(this)}>Close</button>
     </div>
     </div>
   </div>
-</div>
+</Modal>
 
 <div id="container-facturas">
 <h2 class="mb-4">Facturas</h2>
@@ -102,12 +142,12 @@ export default class Factura extends React.Component
       
             </thead>
             <tbody id="table-factura">
-                {this.state.facturas.map((factura)=>(
+                {this.state.facturas.map((factura,index)=>(
                     <tr>
                     <td scope="row">{factura._id}</td>
-                <td>{factura.fecha}</td>
-                <td>{factura.total}</td>
-                    <td><button class="btn  btn-success"><i class="fa fa-plus"></i></button> <button class="btn  btn-danger" onClick={this.eliminarFactura.bind(this,factura._id)}><i class="fa fa-trash"></i></button></td>
+                    <td>{factura.fecha}</td>
+                    <td>{factura.total}</td>
+                    <td><button class="btn  btn-success" onClick={this.mostrarCampos.bind(this,index)}><i class="fa fa-plus"></i></button> <button class="btn  btn-danger" onClick={this.eliminarFactura.bind(this,factura._id)}><i class="fa fa-trash"></i></button></td>
                 </tr>    
                 ))}
             </tbody>

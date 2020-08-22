@@ -56,6 +56,14 @@ class ServiceCLiente{
             resolve(json)
         })
     }
+
+    mostrarClienteFactura(data){
+        return new Promise(async (resolve)=>{
+            const response=await fetch(`http://localhost:3003/clientes/${data}`)
+            const json=await response.json()
+            resolve(json)
+        })
+    }
 }
 
 

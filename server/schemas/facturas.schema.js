@@ -24,6 +24,10 @@ const FacturasSchema = new mongoose.Schema({
                 type:mongoose.Schema.Types.ObjectId,
                 required:true
              },
+             nombre:{
+                 type:String,
+                 required:true
+             },
              precio:{
                  type:String,
                  required:true
