@@ -52,6 +52,9 @@ export default class CrearFactura extends React.Component{
     eliminarLista(){
         this.setState({listaProductos:[]})
         this.setState({totalFactura:0})
+        this.setState({disableCar:true})
+        this.setState({datosProductos:{}})
+        this.setState({datosCliente:{}})
     }
 
     agregarProductoFactura(){
@@ -91,6 +94,7 @@ export default class CrearFactura extends React.Component{
         console.log(factura)
         const data= await ServiceFactura.crearFactura(factura)
         console.log(data)
+        this.eliminarLista()
     }
 
     render(){
