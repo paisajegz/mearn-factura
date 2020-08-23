@@ -1,5 +1,6 @@
 import React from 'react';
 import ServiceCliente from "../../../services/clientes.service"
+import Swal from 'sweetalert2'
 
 export default class CrearClientes extends React.Component
 {
@@ -26,7 +27,21 @@ export default class CrearClientes extends React.Component
     }
     async guardarCliente(){
         const data = await ServiceCliente.crearCliente(this.state)
-        console.log(data)
+        if(data.title="ok"){
+            Swal.fire(
+                data.title,
+                data.message,
+                'success'
+              )
+              this.limpiarClientes()
+        }else{
+            Swal.fire({
+                icon: 'error',
+                title: data.title,
+                text: data.message,
+                
+            })
+        }
     }
 
     render(){

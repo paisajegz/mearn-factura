@@ -1,5 +1,7 @@
 import React from 'react';
 import ServiceCliente from "../../../services/clientes.service"
+import Swal from 'sweetalert2'
+
 export default class Clientes extends React.Component{
     state={
         clientes:[],
@@ -23,8 +25,35 @@ export default class Clientes extends React.Component{
     }
 
     async eliminarCliente(index){
-        const data=await ServiceCliente.eliminarCliente(index)
-        console.log(data)
+        Swal.fire({
+            title: 'borrar?',
+            text: "quieres borrar el cliente",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'si',
+            cancelButtonText:"cancelar"
+          }).then(async (result) => {
+            if (result.value) {
+                const data=await ServiceCliente.eliminarCliente(index)
+                    if(data.title){
+                        Swal.fire(
+                            data.title,
+                            data.message,
+                            'success'
+                        )
+                    }else{
+                        Swal.fire({
+                            icon: 'error',
+                            title: data.title,
+                            text: data.message,
+                            
+                        })
+                    }
+            }
+          })
+        
     }
 
     actulizarCliente(index){

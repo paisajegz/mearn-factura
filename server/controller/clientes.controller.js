@@ -9,14 +9,24 @@ controllerCliente.mostrarClientes=async function(req,res){
 
 
 controllerCliente.crearClientes=async function(req,res){
-    cliente = new ClienteSchema(req.body)
-    await cliente.save();
-    res.send({title:"ok", message:"usuario registrado"})
+    try{
+        cliente = new ClienteSchema(req.body)
+        await cliente.save();
+        res.send({title:"ok", message:"usuario registrado"})
+    }catch(e){
+        res.send({title:"error",message:e})
+    }
+    
     
 }
 
 controllerCliente.mostrarClientesById=async function(req,res){
-    res.send(await ClienteSchema.findOne({_id:req.params.id}).exec())
+    try{
+        res.send(await ClienteSchema.findOne({_id:req.params.id}).exec())
+    }catch(e){
+        res.send({})
+    }
+    
 }
 
 
@@ -31,7 +41,9 @@ controllerCliente.eliminarCliente=function(req,res){
 
 controllerCliente.buscarByDocumento=async function(req,res){
     const user=await ClienteSchema.findOne({documento:req.params.doc}).exec();
-    res.send(user)
+    if(user)res.send(user)
+    else res.send({})
+    
 
 }
 

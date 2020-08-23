@@ -34,7 +34,12 @@ controllerFactura.crearFactura=async function(req,res){
 }
 
 controllerFactura.mostrarFacturaById=async function(req,res){
-    res.send(await FacturasSchema.find({_id:req.params.id}).exec())
+    try{
+        res.send(await FacturasSchema.find({_id:req.params.id}).exec())
+    }catch(e){
+        res.send({})
+    }
+    
 }
 
 

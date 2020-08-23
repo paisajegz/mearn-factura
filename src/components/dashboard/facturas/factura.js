@@ -3,6 +3,8 @@ import ServiceFactura from "../../../services/factura.service"
 import Modal from 'react-modal';
 import ServiceCliente from "../../../services/clientes.service"
 import ServiceVendedor from "../../../services/vendedor.service"
+import Swal from 'sweetalert2'
+
 
 export default class Factura extends React.Component
 {
@@ -43,10 +45,37 @@ export default class Factura extends React.Component
         this.setState({facturas})
     }
     async eliminarFactura(id){
-        console.log(id)
-        const data = await ServiceFactura.eliminarFactura(id)
-        console.log(data)
-        this.mostrarFacturas()
+        Swal.fire({
+            title: ' borrar?',
+            text: "quieres borrar la factura",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'si',
+            cancelButtonText:"cancelar"
+          }).then(async (result) => {
+            if (result.value) {
+                const data = await ServiceFactura.eliminarFactura(id)
+                if(data.title="ok"){
+                    Swal.fire(
+                        data.title,
+                        data.message,
+                        'success'
+                      )        
+                      this.mostrarFacturas()
+                }else{
+                    Swal.fire({
+                        icon: 'error',
+                        title: data.title,
+                        text: data.message,
+                        
+                    })
+                }
+              
+            }
+          })
+        
     }
 
     async BuscarDocumento(e){

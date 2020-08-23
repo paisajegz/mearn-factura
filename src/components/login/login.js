@@ -2,6 +2,7 @@ import React from 'react';
 import { withRouter } from 'react-router-dom';
 import "./login.css"
 import ServiceVendedor from "../../services/vendedor.service"
+import Swal from 'sweetalert2'
 class Login extends React.Component{
   state={
       correo:"",
@@ -24,9 +25,19 @@ class Login extends React.Component{
       console.log(data)
       if(data.title=="ok"){
         sessionStorage.setItem("auth",data.message)
+        Swal.fire(
+          'Bienvenido!',
+          'eres bievenido!',
+          'success'
+        )
         this.props.cambiarLogin(true)
       }else{ 
-        alert("permisos denegado")
+        Swal.fire({
+          icon: 'error',
+          title: 'no permitido',
+          text: 'usuaro no loegado sastfactoriamente',
+          
+        })
       }  
     
     
