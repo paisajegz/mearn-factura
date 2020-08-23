@@ -16,7 +16,12 @@ router.get("/documento/:doc",autorizacion,controllerCliente.buscarByDocumento)
 router.get("/:id",autorizacion,controllerClientes.mostrarClientesById)
 
 router.post("/add",[ autorizacion, validate([
-    body('correo').exists().isEmail()
+    body('correo').exists().withMessage("no existe correo")
+    .isEmail().withMessage("correo no valido"),
+    body('primerNombre').exists().withMessage("no existe primer nombre"),
+    body("primerApellido").exists().withMessage("no existe primer apellido"),
+    body("documento").exists().withMessage("no existe documento"),
+    body("tipoDocumento").exists().withMessage("no existe tipo documento")
 ])],controllerClientes.crearClientes)
 
 
