@@ -43,6 +43,7 @@ export default class Clientes extends React.Component{
                             data.message,
                             'success'
                         )
+                        this.mostrarClientes()
                     }else{
                         Swal.fire({
                             icon: 'error',
@@ -62,15 +63,33 @@ export default class Clientes extends React.Component{
 
     }
     async componentDidMount(){
+        this.mostrarClientes()
+    }
+
+    async mostrarClientes(){
         const data = await ServiceCliente.mostrarClientes()
         this.setState({clientes:data})
     }
-
     async submitUpdateClient(){
         delete this.state.updateCliente._id
        console.log(`http://localhost:3003/clientes/${this.state.updateCliente.documento}`)
        const data = await ServiceCliente.actualizarCliente(this.state.updateCliente.documento,this.state.updateCliente)
-       alert(data.title)
+       if(data.title="ok"){
+            Swal.fire(
+                data.title,
+                data.message,
+                'success'
+            )
+            this.setState({actualizando:false})
+            
+        }else{
+            Swal.fire({
+                icon: 'error',
+                title: data.title,
+                text: data.message,
+                
+            })
+        }
     }
 
     render(){

@@ -13,7 +13,6 @@ router.post("/add",[autorizacion,validate(
         body("cliente").exists().withMessage("el cliente no existe"),
         body("vendedor").exists().withMessage("el vendedor no existe"),
         body("total").exists().withMessage("el total no existe"),
-        body("fecha").exists().withMessage("no existe no fecha"),
         body("productos").exists().withMessage("no existe productos")
     ]
 )],contrllerFacturas.crearFactura)

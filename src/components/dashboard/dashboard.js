@@ -5,12 +5,16 @@ import CrearClientes from "./crear-clientes/crear-clientes"
 import CrearFactura from  "./crear-factura/crear-factura"
 import { Route, Link, Redirect } from "react-router-dom";
 import Factura from './facturas/factura';
+import Logout from '../logout/logout';
 
 export default class DashBoard extends React.Component{
     state={
         active:"active"
     }
 
+    constructor(props){
+        super(props)
+    }
 
     cambiarEstadoMenu(){
         this.setState({active:((this.state.active=="")?"active":"")})
@@ -78,6 +82,9 @@ export default class DashBoard extends React.Component{
                 </Route>
                 <Route path="/dashboard/clientes">
                     <Clientes/>
+                </Route>
+                <Route path="/dashboard/close">
+                    <Logout cambiarLogin={this.props.cambiarLogin}/>
                 </Route>
             </div>
         </div>

@@ -28,7 +28,7 @@ class App extends React.Component {
             {this.state.login?<Redirect to="/dashboard" />:<Login cambiarLogin={this.cambiarLogin.bind(this)} />}
           </Route>
           <Route path="/dashboard">
-            {this.state.login?<DashBoard />:<Redirect to="/"/>}
+            {this.state.login?<DashBoard cambiarLogin={this.cambiarLogin.bind(this)}/>:<Redirect to="/"/>}
           </Route>
         </Switch>
     </Router>

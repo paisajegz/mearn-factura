@@ -2,7 +2,7 @@ import React from 'react';
 import ServiceCliente from "../../../services/clientes.service"
 import ServiceProducto from "../../../services/productos.service"
 import ServiceFactura from "../../../services/factura.service"
-
+import Swal from 'sweetalert2'
 export default class CrearFactura extends React.Component{
     state={
         documentoCliente:"",
@@ -93,8 +93,22 @@ export default class CrearFactura extends React.Component{
         })
         console.log(factura)
         const data= await ServiceFactura.crearFactura(factura)
-        console.log(data)
-        this.eliminarLista()
+        if(data.title="ok"){
+            Swal.fire(
+                data.title,
+                data.message,
+                'success'
+              )
+              this.eliminarLista()
+        }else{
+            Swal.fire({
+                icon: 'error',
+                title: data.title,
+                text: data.message,
+                
+            })
+        }
+        
     }
 
     render(){
